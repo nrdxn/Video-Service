@@ -9,17 +9,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
 import { compare, genSalt, hash } from 'bcryptjs';
-import { AuthDto } from './auth.dto';
+import { AuthDto } from './dto/auth.dto';
 
 @Injectable()
 export class AuthService {
-	constructor(
+	constructor (
 		@InjectRepository(UserEntity)
 		private readonly userRepository: Repository<UserEntity>,
 		private readonly jwtService: JwtService,
 	) {}
 	
-	async register(dto: AuthDto) {
+	async register (dto: AuthDto) {
 		const oldUser = await this.userRepository.findOneBy({ email: dto.email });
 		if (oldUser) throw new BadRequestException('Email занят');
 
@@ -30,15 +30,15 @@ export class AuthService {
 			password: await hash(dto.password, salt),
 		});
 
-		const user = await this.userRepository.save(newUser);
+		const userInDb = await this.userRepository.save(newUser);
 
 		return {
-			user: this.returnUserFields(user),
-			accessToken: await this.issueAccessToken(user.id),
+			user: this.returnUserFields(userInDb),
+			accessToken: await this.issueAccessToken(userInDb.id),
 		};
 	}
 
-	async login(dto: AuthDto) {
+	async login (dto: AuthDto) {
 		const user = await this.validateUser(dto);
 
 		return {
@@ -47,7 +47,7 @@ export class AuthService {
 		};
 	}
 
-	async validateUser(dto: AuthDto) {
+	async validateUser (dto: AuthDto) {
 		const user = await this.userRepository.findOne({
 			where: {
 				email: dto.email,
@@ -63,7 +63,7 @@ export class AuthService {
 
 		return user;
 	}
-	async issueAccessToken(userId: number) {
+	async issueAccessToken (userId: number) {
 		const data = {
 			id: userId,
 		};
@@ -73,7 +73,7 @@ export class AuthService {
 		});
 	}
 
-	returnUserFields(user: UserEntity) {
+	returnUserFields (user: UserEntity) {
 		return {
 			id: user.id,
 			email: user.email,
