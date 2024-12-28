@@ -1,6 +1,6 @@
 import { Entity, Column, OneToMany } from 'typeorm';
-import { VideoEntity } from '../video/video.entity';
-import { Base } from '../utils/base';
+import { VideoEntity } from '../../video/entities/video.entity';
+import { Base } from '../../utils/base';
 import { SubscriptionEntity } from './subscription.entity';
 
 @Entity('User')

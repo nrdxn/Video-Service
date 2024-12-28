@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from './user.entity';
+import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import { SubscriptionEntity } from './subscription.entity';
+import { SubscriptionEntity } from './entities/subscription.entity';
 import { UserDto } from './dto/user.dto';
 import { genSalt, hash } from 'bcryptjs';
 

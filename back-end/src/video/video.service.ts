@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhereProperty, ILike, MoreThan, Repository } from 'typeorm';
 import { VideoDto } from './dto/video.dto';
-import { VideoEntity } from './video.entity';
+import { VideoEntity } from './entities/video.entity';
 
 @Injectable()
 export class VideoService {
@@ -52,7 +52,7 @@ export class VideoService {
         return videoInDb
     }
 
-    async update (id: number, dto: VideoDto) {
+    async updateVideo (id: number, dto: VideoDto) {
         const videoFromDb = await this.findVideoById(id)
 
         return await this.videoRepository.save({

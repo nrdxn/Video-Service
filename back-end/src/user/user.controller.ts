@@ -16,17 +16,17 @@ export class UserController {
     return await this.userService.findUserById(id)
   }
 
-  @Get('by-id/:id')
-  async getUser (@Param('id') id: string) {
-    return await this.userService.findUserById(+id)
+  @Get(':userId')
+  async getUser (@Param('userId') userId: string) {
+    return await this.userService.findUserById(+userId)
   }
 
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
-  @Put(':id')
+  @Put('update-profile/:userId')
   @Auth()
-  async updateUser (@Param('id') id: string, @Body() dto: UserDto) {
-    return this.userService.updateProfile(+id, dto)
+  async updateUser (@Param('userId') userId: string, @Body() dto: UserDto) {
+    return this.userService.updateProfile(+userId, dto)
   }
 
   @HttpCode(200)

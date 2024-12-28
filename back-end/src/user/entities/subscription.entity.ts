@@ -1,5 +1,4 @@
 import { Entity, ManyToOne, JoinColumn } from 'typeorm';
-import { VideoEntity } from 'src/video/video.entity';
 import { Base } from 'src/utils/base';
 import { UserEntity } from './user.entity';
 

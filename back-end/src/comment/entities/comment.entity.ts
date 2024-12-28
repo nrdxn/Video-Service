@@ -1,7 +1,7 @@
-import { UserEntity } from '../user/user.entity';
+import { UserEntity } from '../../user/entities/user.entity';
 import { Entity, JoinColumn, ManyToOne, Column } from 'typeorm';
-import { Base } from '../utils/base';
-import { VideoEntity } from '../video/video.entity';
+import { Base } from '../../utils/base';
+import { VideoEntity } from '../../video/entities/video.entity';
 
 @Entity('Comment')
 export class CommentEntity extends Base {
