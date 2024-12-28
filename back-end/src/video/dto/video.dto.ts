@@ -1,11 +1,8 @@
-import { IsEmail, IsString } from 'class-validator'
+import { IsString } from 'class-validator'
 
-export class UserDto {
+export class VideoDto {
 
-    @IsEmail()
-    email: string
-
-    password?: string
+    isPublic?: boolean
 
     @IsString()
     name: string
@@ -14,6 +11,9 @@ export class UserDto {
     description: string
     
     @IsString()
-    avatarPath: string
+    videoPath: string
+
+    @IsString()
+    thumbnailPath: string
 
 }
