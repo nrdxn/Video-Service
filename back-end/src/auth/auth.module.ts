@@ -6,7 +6,6 @@ import { JwtModule } from '@nestjs/jwt';
 import { getJwtConfig } from 'src/config/jwt.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from 'src/user/user.entity';
-import { config } from '../../env.config'
 
 @Module({
   controllers: [ AuthController ],
