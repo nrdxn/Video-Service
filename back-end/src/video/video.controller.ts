@@ -1,4 +1,16 @@
-import { Controller, Body, Get, HttpCode, Param, Post, Put, UsePipes, ValidationPipe, Query, Delete } from '@nestjs/common';
+import { 
+  Controller, 
+  Body, 
+  Get, 
+  HttpCode,
+  Param, 
+  Post, 
+  Put, 
+  UsePipes, 
+  ValidationPipe, 
+  Query, 
+  Delete 
+} from '@nestjs/common';
 import { VideoService } from './video.service';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { CurrentUser } from 'src/user/decorators/user.decorator';

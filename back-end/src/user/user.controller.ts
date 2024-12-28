@@ -1,4 +1,14 @@
-import { Body, Controller, Get, HttpCode, Param, Patch, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
+import { 
+  Body, 
+  Controller, 
+  Get, 
+  HttpCode, 
+  Param, 
+  Patch, 
+  Put, 
+  UsePipes, 
+  ValidationPipe 
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { CurrentUser } from './decorators/user.decorator';
