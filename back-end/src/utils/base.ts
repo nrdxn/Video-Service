@@ -1,12 +1,12 @@
-import { CreateDateColumn, PrimaryGeneratedColumn } from "typeorm"
+import { CreateDateColumn, PrimaryGeneratedColumn } from 'typeorm';
 
 export abstract class Base {
     @PrimaryGeneratedColumn()
-    id: number
+    id: number;
 
-    @CreateDateColumn({ name: 'created_at'})
-    createdAt: Date
+    @CreateDateColumn({ name: 'created_at' })
+    createdAt: Date;
 
-    @CreateDateColumn({ name: 'updated_at'})
-    updatedAt: Date
+    @CreateDateColumn({ name: 'updated_at' })
+    updatedAt: Date;
 }

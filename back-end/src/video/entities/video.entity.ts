@@ -5,36 +5,34 @@ import { CommentEntity } from '../../comment/entities/comment.entity';
 
 @Entity('Video')
 export class VideoEntity extends Base {
-
     @Column({ default: '' })
-    name: string
+    name: string;
 
     @Column({ default: false, name: 'is_public' })
-    isPublic: boolean
+    isPublic: boolean;
 
     @Column({ default: 0 })
-    views?: number
+    views?: number;
 
     @Column({ default: 0 })
-    duration?: number
+    duration?: number;
 
     @Column({ default: 0 })
-    likes?: number
+    likes?: number;
 
-    @Column({ default: '', type: 'text'})
-    description: string
+    @Column({ default: '', type: 'text' })
+    description: string;
 
     @Column({ default: '', name: 'video_path' })
-    videoPath: string
+    videoPath: string;
 
     @Column({ default: '', name: 'thumbnail_path' })
-    thumbnailPath: string
+    thumbnailPath: string;
 
-    @ManyToOne(() => UserEntity, user => user.videos)
+    @ManyToOne(() => UserEntity, (user) => user.videos)
     @JoinColumn({ name: 'user_id' })
-    user: UserEntity
+    user: UserEntity;
 
-    @OneToMany(() => CommentEntity, comment => comment.video)
-    comments: CommentEntity[]
-
+    @OneToMany(() => CommentEntity, (comment) => comment.video)
+    comments: CommentEntity[];
 }

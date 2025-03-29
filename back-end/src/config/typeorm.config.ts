@@ -1,5 +1,5 @@
-import { TypeOrmModuleOptions } from '@nestjs/typeorm'
-import { config } from '@config'
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { config } from '@config';
 
 export const getTypeOrmConfig = async (): Promise<TypeOrmModuleOptions> => ({
     type: 'postgres',
@@ -10,4 +10,4 @@ export const getTypeOrmConfig = async (): Promise<TypeOrmModuleOptions> => ({
     password: config.database.password,
     autoLoadEntities: true,
     synchronize: true
-})
+});

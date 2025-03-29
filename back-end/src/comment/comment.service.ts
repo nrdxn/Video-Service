@@ -6,19 +6,18 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class CommentService {
-    constructor (
+    constructor(
         @InjectRepository(CommentEntity)
         private readonly commentRepository: Repository<CommentEntity>
     ) {}
 
-    async create (userId: number, dto: CommentDto) {
+    async create(userId: number, dto: CommentDto) {
         const newComment = await this.commentRepository.create({
             message: dto.message,
             video: { id: dto.videoId },
             user: { id: userId }
-        })
+        });
 
-        return this.commentRepository.save(newComment)
+        return this.commentRepository.save(newComment);
     }
-
 }

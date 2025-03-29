@@ -6,18 +6,21 @@ import { VideoEntity } from './entities/video.entity';
 
 @Injectable()
 export class VideoService {
-    constructor (
+    constructor(
         @InjectRepository(VideoEntity)
-        private readonly videoRepository: Repository<VideoEntity>,
+        private readonly videoRepository: Repository<VideoEntity>
     ) {}
 
-    async findVideoById (id: number, isPublic = false) {
+    async findVideoById(id: number, isPublic = false) {
         const videoInDb = await this.videoRepository.findOne({
-            where: isPublic ? {
-                id, isPublic: true
-            } : {
-                id
-            },
+            where: isPublic
+                ? {
+                      id,
+                      isPublic: true
+                  }
+                : {
+                      id
+                  },
             relations: {
                 user: true,
                 comments: {
@@ -45,31 +48,32 @@ export class VideoService {
                     }
                 }
             }
-        })
+        });
 
-        if (!videoInDb) throw new NotFoundException('Видео не найдено')
+        if (!videoInDb) throw new NotFoundException('Видео не найдено');
 
-        return videoInDb
+        return videoInDb;
     }
 
-    async updateVideo (id: number, dto: VideoDto) {
-        const videoFromDb = await this.findVideoById(id)
+    async updateVideo(id: number, dto: VideoDto) {
+        const videoFromDb = await this.findVideoById(id);
 
         return await this.videoRepository.save({
-            ...videoFromDb, ...dto
-        })
+            ...videoFromDb,
+            ...dto
+        });
     }
 
-    async getAll (searchTerm?: string) {
-        let options: FindOptionsWhereProperty<VideoEntity> = {}
+    async getAll(searchTerm?: string) {
+        let options: FindOptionsWhereProperty<VideoEntity> = {};
 
         if (searchTerm) {
             options = {
                 name: ILike(`%${searchTerm}%`)
-            }
+            };
         }
 
-        return (await this.videoRepository.find({
+        return await this.videoRepository.find({
             where: {
                 ...options,
                 isPublic: true
@@ -89,18 +93,18 @@ export class VideoService {
                     name: true,
                     avatarPath: true,
                     isVerified: true
-                },
+                }
             }
-        }))
+        });
     }
 
-    async getMostPopularVideoByViews () {
+    async getMostPopularVideoByViews() {
         return await this.videoRepository.find({
             where: {
                 views: MoreThan(0)
             },
             relations: {
-                user: true,
+                user: true
             },
             select: {
                 user: {
@@ -108,15 +112,15 @@ export class VideoService {
                     name: true,
                     avatarPath: true,
                     isVerified: true
-                },
+                }
             },
             order: {
                 views: -1
             }
-        })
+        });
     }
 
-    async createVideo (userId: number) {
+    async createVideo(userId: number) {
         const defaultValue = {
             name: '',
             user: {
@@ -125,31 +129,31 @@ export class VideoService {
             description: '',
             videoPath: '',
             thumbnailPath: ''
-        }
+        };
 
-        const newVideo = await this.videoRepository.create(defaultValue)
-        const video = await this.videoRepository.save(newVideo)
+        const newVideo = await this.videoRepository.create(defaultValue);
+        const video = await this.videoRepository.save(newVideo);
 
-        return video.id
+        return video.id;
     }
 
-    async deleteVideo (id: number) {
-        await this.videoRepository.delete({ id })
+    async deleteVideo(id: number) {
+        await this.videoRepository.delete({ id });
     }
 
-    async updateCountOfViews (id: number) {
-        const videoFromDb = await this.findVideoById(id)
+    async updateCountOfViews(id: number) {
+        const videoFromDb = await this.findVideoById(id);
 
-        videoFromDb.views++
+        videoFromDb.views++;
 
-        return await this.videoRepository.save(videoFromDb)
+        return await this.videoRepository.save(videoFromDb);
     }
 
-    async updateReaction (id: number) {
-        const videoFromDb = await this.findVideoById(id)
+    async updateReaction(id: number) {
+        const videoFromDb = await this.findVideoById(id);
 
-        videoFromDb.likes++
+        videoFromDb.likes++;
 
-        return await this.videoRepository.save(videoFromDb)
+        return await this.videoRepository.save(videoFromDb);
     }
 }

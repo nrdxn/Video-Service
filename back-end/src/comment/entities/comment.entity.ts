@@ -5,15 +5,14 @@ import { VideoEntity } from '../../video/entities/video.entity';
 
 @Entity('Comment')
 export class CommentEntity extends Base {
-
-    @Column({ default: '', type: 'text'})
-    message: string
+    @Column({ default: '', type: 'text' })
+    message: string;
 
     @ManyToOne(() => UserEntity)
     @JoinColumn({ name: 'user_id' })
-    user: UserEntity
+    user: UserEntity;
 
-    @ManyToOne(() => VideoEntity, video => video.comments)
+    @ManyToOne(() => VideoEntity, (video) => video.comments)
     @JoinColumn({ name: 'video_id' })
-    video: UserEntity
+    video: VideoEntity;
 }

@@ -1,10 +1,9 @@
-import { IsNumber, IsString} from 'class-validator'
+import { IsNumber, IsString } from 'class-validator';
 
 export class CommentDto {
-
     @IsNumber()
-    videoId: number
+    videoId: number;
 
     @IsString()
-    message: string
+    message: string;
 }

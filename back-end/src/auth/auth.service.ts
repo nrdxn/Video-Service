@@ -1,8 +1,8 @@
 import {
-	BadRequestException,
-	Injectable,
-	NotFoundException,
-	UnauthorizedException,
+    BadRequestException,
+    Injectable,
+    NotFoundException,
+    UnauthorizedException
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,70 +13,72 @@ import { AuthDto } from './dto/auth.dto';
 
 @Injectable()
 export class AuthService {
-	constructor (
-		@InjectRepository(UserEntity)
-		private readonly userRepository: Repository<UserEntity>,
-		private readonly jwtService: JwtService,
-	) {}
-	
-	async register (dto: AuthDto) {
-		const oldUser = await this.userRepository.findOneBy({ email: dto.email });
-		if (oldUser) throw new BadRequestException('Email занят');
+    constructor(
+        @InjectRepository(UserEntity)
+        private readonly userRepository: Repository<UserEntity>,
+        private readonly jwtService: JwtService
+    ) {}
 
-		const salt = await genSalt(10);
+    async register(dto: AuthDto) {
+        const oldUser = await this.userRepository.findOneBy({
+            email: dto.email
+        });
+        if (oldUser) throw new BadRequestException('Email занят');
 
-		const newUser = await this.userRepository.create({
-			email: dto.email,
-			password: await hash(dto.password, salt),
-		});
+        const salt = await genSalt(10);
 
-		const userInDb = await this.userRepository.save(newUser);
+        const newUser = await this.userRepository.create({
+            email: dto.email,
+            password: await hash(dto.password, salt)
+        });
 
-		return {
-			user: this.returnUserFields(userInDb),
-			accessToken: await this.issueAccessToken(userInDb.id),
-		};
-	}
+        const userInDb = await this.userRepository.save(newUser);
 
-	async login (dto: AuthDto) {
-		const user = await this.validateUser(dto);
+        return {
+            user: this.returnUserFields(userInDb),
+            accessToken: await this.issueAccessToken(userInDb.id)
+        };
+    }
 
-		return {
-			user: this.returnUserFields(user),
-			accessToken: await this.issueAccessToken(user.id),
-		};
-	}
+    async login(dto: AuthDto) {
+        const user = await this.validateUser(dto);
 
-	async validateUser (dto: AuthDto) {
-		const user = await this.userRepository.findOne({
-			where: {
-				email: dto.email,
-			},
-			select: ['id', 'email', 'password'],
-		});
+        return {
+            user: this.returnUserFields(user),
+            accessToken: await this.issueAccessToken(user.id)
+        };
+    }
 
-		if (!user) throw new NotFoundException('Пользователь не найден!');
+    async validateUser(dto: AuthDto) {
+        const user = await this.userRepository.findOne({
+            where: {
+                email: dto.email
+            },
+            select: ['id', 'email', 'password']
+        });
 
-		const isValidPassword = await compare(dto.password, user.password);
-		if (!isValidPassword)
-			throw new UnauthorizedException('Неправильный пароль!');
+        if (!user) throw new NotFoundException('Пользователь не найден!');
 
-		return user;
-	}
-	async issueAccessToken (userId: number) {
-		const data = {
-			id: userId,
-		};
+        const isValidPassword = await compare(dto.password, user.password);
+        if (!isValidPassword)
+            throw new UnauthorizedException('Неправильный пароль!');
 
-		return await this.jwtService.signAsync(data, {
-			expiresIn: '31d',
-		});
-	}
+        return user;
+    }
+    async issueAccessToken(userId: number) {
+        const data = {
+            id: userId
+        };
 
-	returnUserFields (user: UserEntity) {
-		return {
-			id: user.id,
-			email: user.email,
-		};
-	}
+        return await this.jwtService.signAsync(data, {
+            expiresIn: '31d'
+        });
+    }
+
+    returnUserFields(user: UserEntity) {
+        return {
+            id: user.id,
+            email: user.email
+        };
+    }
 }
